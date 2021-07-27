@@ -1,4 +1,4 @@
-% Created 2021-07-21 qua 11:02
+% Created 2021-07-27 ter 16:30
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -30,20 +30,26 @@
 \tableofcontents
 
 
-\section{Resumo}
-\label{sec:orgb775871}
-Um projeto de automação residencial foi demandado. Para a minha casa, pretende-se usar os ESP8266 para cada tomada para poder ter conexão com o computador central (raspberry pi).
-Eu vou me limitar ao backend senão o projeto vai ficar complicado demais.
+\section{Motivação}
+\label{sec:orga999f0f}
+Um projeto de automação residencial foi demandado. Primeira coisa que vem em mente é poder controlar as lâmdas de casa individualemente. Assim, pretende-se usar um ESP8266 para cada ponto de interruptor de lâmpada para poder ter conexão com o computador central (raspberry pi). Temos disponíveis sensores piroelétricos, que são úteis para desligar as lâmpadas automaticamente na ausência de pessoas no cômodo.
 
-\section{Lâmpadas}
-\label{sec:org6092d4b}
-\subsection{Descrição do circuito}
-\label{sec:org9361b58}
+\section{Objetivos}
+\label{sec:org3b42ab0}
+Gerenciar o funcionamento das lâmpadas de casa, cujas ações de desligar ou ligar possam ser configuradas como automáticas (depende do sensor de presença) ou manuais (depende de comandos por smarthphone, sejam botões e/ou comandos de voz). Este gerenciamento também inclue a formação de relatórios sobre consumo elétrico (estimado) em cada dispositivo, apresentando as informações em histogramas e suas respectivas conclusões.
+Um objetivo secundário seria implementar o controle de ar condicionado, em que a diferença para a lâmpada seria o controle (malha aberta) de temperatura e o registro da mesma no relatório.
+
+\section{Detalhamento do projeto}
+\label{sec:org32e8f7b}
+\subsection{Lâmpadas}
+\label{sec:orgfd36e63}
+\subsubsection{Descrição do circuito}
+\label{sec:org582a93b}
 Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retificadora e então o módulo relé com o esp8266 controla o chaveamento da lâmpada. Não menos importante, o interruptor da tomada dever ser alimentado por um resistor, cujo estado é lido por uma porta digital. Quase esqueci dos sensores de presença. Devido ao espaço ocupado, novos interruptores devem ser comprados.
 Sendo assim, o \(\mu C\) precisará de 3 portas digitais para controlar os periféricos e mais talvez duas para poder programar em ISP.
 Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb no momento é impossível para mim imprimir sem uma impressora adequada.
-\subsection{Componentes utilizados (por lâmpada)}
-\label{sec:orgee139f4}
+\subsubsection{Componentes utilizados (por lâmpada)}
+\label{sec:org9c9887f}
 \begin{itemize}
 \item[{$\boxtimes$}] 1 Trafo de carregador;
 \item[{$\boxtimes$}] 4 Diodos 1n4007;
@@ -56,22 +62,22 @@ Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb n
 \begin{figure}[h!]
 \caption{\label{fig:module_esp01}Módulo relé com ESP01 utilizado}
 \centering
-\includegraphics[width=0.3\textwidth]{./module_esp01.png}
+\includegraphics[width=0.7\textwidth]{./module_esp01.png}
 \end{figure}
 
 O módulo de relé possui o esquemático como na figura \ref{schematic_relay}
 \begin{figure}[h!]
 \caption{\label{fig:schematic_relay}Esquema do circuito do módulo com relé}
 \centering
-\includegraphics[width=0.3\textwidth]{./schematic_relay.png}
+\includegraphics[width=0.7\textwidth]{./schematic_relay.png}
 \end{figure}
-\section{Controle do ar condicionado}
-\label{sec:orgd5c48c9}
-\subsection{Descrição do hardware}
-\label{sec:orgb3ef852}
+\subsection{Controle do ar condicionado}
+\label{sec:org1d87dce}
+\subsubsection{Descrição do hardware}
+\label{sec:org311741a}
 O computador principal se conecta ao controle do ar condicionado através dos barramentos de I2C do display e do microcontrolador. O primeiro barramento seria usado para o computador central identificar as configurações atuais do ar condicionado e o segundo serve para fazer alterações nas configurações. Para tanto é preciso fazer uma revisão sobre o protocolo e interpretar os dados lidos.
-\subsection{I2C revisão}
-\label{sec:org2aee7c8}
+\subsubsection{I2C revisão}
+\label{sec:orgd01dc83}
 Ao abrir o controle do ar condicionado foram encontrados os pinos 36,37,38 e 44 acessíveis ao usuário. Como mostrado na figura \ref{fig:i2c_sh77}. Claramente eles servem para estabelecer comunicação i2c entre o chip e um computador externo.
 \begin{figure}[h!]
 \caption{\label{fig:i2c_sh77}Pinos i2c disponíveis ao usuário.}
@@ -99,18 +105,34 @@ Depois disso notei que precisava rever um pouco sobre i2c e achei as seguintes f
 TODO \ldots{}
 
 
-\section{Descrição do software}
-\label{sec:orgf05a8fb}
-Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como servidor para responder aos comandos do computador central, porém também irá enviar mensagens durante a comutação do sensor piroelétrico (descobrir se não vai haver realimentação positiva com a lâmpada)
+\subsection{Descrição do software}
+\label{sec:org2eb6e2c}
+Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como escravo para responder aos comandos do computador central e também irá enviar mensagens durante a comutação do sensor piroelétrico (descobrir se não vai haver realimentação positiva com a lâmpada)
 Protocolo de comunicação:
 Tem que descobrir uma forma de protocolar as mensagens. O receptor vai ler a mensagem e vai decodificá-la. Após decodificar, vai executar a ação de desligar/ligar.
 
-USE o micropython, nada de C, para facilitar sua vida.
 
 Procedimentos a serem utilizados na cpu principal:
 \begin{itemize}
 \item get state() \# Retorna o estado atual lâmpada;
-\item get switch() \# Retorna a posição do interruptor;
 \item turn(boolean state) \# Pede para ligar/desligar a lâmpada
+\item get switch() \# Retorna a posição do interruptor;
 \end{itemize}
+
+\subsubsection{Criar servidor local/Aberto}
+\label{sec:org95f6c5a}
+\begin{itemize}
+\item Conseguir externar o ip desse servidor
+\end{itemize}
+
+
+**
+
+\section{Caso de uso}
+\label{sec:org9935469}
+\begin{figure}[h!]
+\caption{\label{fig:caso_de_uso}Diagrama de caso de uso}
+\centering
+\includegraphics[width=\textwidth]{diagrama_uso.png}
+\end{figure}
 \end{document}
