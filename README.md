@@ -1,52 +1,55 @@
 
 # Table of Contents
 
-1.  [Motivação](#org07e5c31)
-2.  [Objetivos](#orgdf78dd7)
-3.  [Detalhamento do projeto](#org31b4d2c)
-    1.  [Lâmpadas](#org730a659)
-        1.  [Descrição do circuito](#org06eb5cb)
-        2.  [Componentes utilizados (por lâmpada)](#orga90a668)
-    2.  [Controle do ar condicionado](#org27f5784)
-    3.  [Descrição do software](#orgb905f24)
+1.  [Motivação](#org6f0cbf6)
+2.  [Objetivos](#orgfb813d0)
+3.  [Detalhamento do projeto](#org8b22299)
+    1.  [Lâmpadas](#orge8bab3c)
+        1.  [Descrição do circuito](#org892c029)
+        2.  [Componentes utilizados (por lâmpada)](#orgcfa7a18)
+    2.  [Descrição do software](#org9ddc428)
+        1.  [Conectividade e gerenciamento de ações](#org3a479d0)
+        2.  [GUI](#orgb188323)
+        3.  [Geração de relatórios](#orgc759a60)
 
 
 
-<a id="org07e5c31"></a>
+<a id="org6f0cbf6"></a>
 
 # Motivação
 
-Um projeto de automação residencial foi demandado. Primeira coisa que vem em mente é poder controlar as lâmdas de casa individualemente. Assim, pretende-se usar um ESP8266 para cada ponto de interruptor de lâmpada para poder ter conexão com o computador central (raspberry pi). Temos disponíveis sensores piroelétricos, que são úteis para desligar as lâmpadas automaticamente na ausência de pessoas no cômodo.
+Um projeto de automação residencial foi demandado. Primeira coisa que vem em mente é poder controlar as lâmdas de casa individualemente como meio de gerenciar o uso de cargas residenciais, viabilizando a economia de energia elétrica. Assim, pretende-se usar um módulo de ESP01 com relé (vide figura \ref{fig:module_esp01}) para cada ponto de interruptor de lâmpada para poder ter conexão com o computador central (raspberry pi).
 
 
-<a id="orgdf78dd7"></a>
+<a id="orgfb813d0"></a>
 
 # Objetivos
 
-Gerenciar o funcionamento das lâmpadas de casa, cujas ações de desligar ou ligar possam ser configuradas como automáticas (depende do sensor de presença) ou manuais (depende de comandos por smarthphone, sejam botões e/ou comandos de voz). Este gerenciamento também inclue a formação de relatórios sobre consumo elétrico (estimado) em cada dispositivo, apresentando as informações em histogramas e suas respectivas conclusões.
-Um objetivo secundário seria implementar o controle de ar condicionado, em que a diferença para a lâmpada seria o controle (malha aberta) de temperatura e o registro da mesma no relatório.
+Gerenciar o funcionamento das lâmpadas de casa, cujo funcionamento deve ser por comando de voz ou de forma manual. Este gerenciamento também inclui a formação de relatórios sobre consumo elétrico (estimado) em cada dispositivo, apresentando as informações em histogramas.
 
 
-<a id="org31b4d2c"></a>
+<a id="org8b22299"></a>
 
 # Detalhamento do projeto
 
 
-<a id="org730a659"></a>
+<a id="orge8bab3c"></a>
 
 ## Lâmpadas
 
 
-<a id="org06eb5cb"></a>
+<a id="org892c029"></a>
 
 ### Descrição do circuito
 
-Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retificadora e então o módulo relé com o esp8266 controla o chaveamento da lâmpada. Não menos importante, o interruptor da tomada dever ser alimentado por um resistor, cujo estado é lido por uma porta digital. Quase esqueci dos sensores de presença. Devido ao espaço ocupado, novos interruptores devem ser comprados.
-Sendo assim, o $\mu C$ precisará de 3 portas digitais para controlar os periféricos e mais talvez duas para poder programar em ISP.
-Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb no momento é impossível para mim imprimir sem uma impressora adequada.
+Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retificadora e então o módulo relé com o esp8266 controla o chaveamento da lâmpada. Para fazer o controle da lâmpada ser manual torna-se necessário detectar a existência de fase no pino Normalmente Aberto (NA) do relé, como na figura \ref{fig:tomada}.
+
+![img](./tomada.png "Circuito a ser implementado para detecção de fase")
+
+Não é intenção deste projeto confeccionar placa de circuito impresso para simplificar o projeto e também no momento é impossível para mim imprimir sem uma impressora adequada.
 
 
-<a id="orga90a668"></a>
+<a id="orgcfa7a18"></a>
 
 ### Componentes utilizados (por lâmpada)
 
@@ -55,8 +58,9 @@ Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb n
 -   [X] 1 Capacitor eletrolítico (47uF);
 -   [X] 1 Capacitor cerâmico (100nF);
 -   [X] 1 Sensor piroelétrico
--   [ ] 1 Conjunto de interruptor; (Precisa comprar)
--   [X] 1 Módulo de acionamento de relé por ESP8266 (figura \ref{fig:module_esp01})
+-   [X] 1 Módulo de acionamento de relé por ESP8266 (figura \ref{fig:module_esp01};
+-   [X] 2 transistores de uso geral para para detecção de fase;
+-   [X] Resistores diversos
 
 ![img](./module_esp01.png "Módulo relé com ESP01 utilizado")
 
@@ -65,26 +69,54 @@ O módulo de relé possui o esquemático como na figura \ref{schematic_relay}
 ![img](./schematic_relay.png "Esquema do circuito do módulo com relé")
 
 
-<a id="org27f5784"></a>
-
-## Controle do ar condicionado
-
-Decodificar o controle do ar condicionado com um fototransistor. Cada ação iria ser incorporada no código do raspberryPI e então através de um fotodiodo, o ar condicionado pode ser acionado.
-
-
-<a id="orgb905f24"></a>
+<a id="org9ddc428"></a>
 
 ## Descrição do software
 
-Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como escravo para responder aos comandos do computador central e também irá enviar mensagens durante a comutação do sensor piroelétrico (descobrir se não vai haver realimentação positiva com a lâmpada)
-Protocolo de comunicação:
-Tem que descobrir uma forma de protocolar as mensagens. O receptor vai ler a mensagem e vai decodificá-la. Após decodificar, vai executar a ação de desligar/ligar.
+O projeto de software é dividor em 3 partes: Conectividade e gerenciamento de ações; GUI; geração de relatórios
 
-Procedimentos a serem utilizados na cpu principal:
 
--   get state() # Retorna o estado atual lâmpada;
--   turn(boolean state) # Pede para ligar/desligar a lâmpada
--   get switch() # Retorna a posição do interruptor;
+<a id="org3a479d0"></a>
+
+### Conectividade e gerenciamento de ações
+
+Esta parte consiste em fazer os ESP8266 se conectarem com o raspberryPI por rede para estabelecer comunicação (vide figura \ref{fig:lan_concept}) e também consiste nas tomadas de decisão para o raspberryPI, determinando o comportamento de cada lâmpada e dando prioridade aos comandos.
+Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como escravo para responder aos comandos do computador central.
+
+![img](./lan_concept.png "Visão conceitual para conectividade LAN dos dispositivos")
+
+-   Atividades de pesquisa e implementação:
+    -   Protocolo de comunicação (http)
+        -   Usar os esps como servidores, de modo que o raspberry consiga solicitar informações.
+    -   Secure shell (ssh) para compartilhar tela
+    -   Programação dos ESP8266
+        -   frameworks: Arduino, micropython, RTOS?
+-   Procedimentos a serem utilizados na cpu principal:
+    -   get state() # Retorna o estado atual lâmpada;
+    -   turn(boolean state) # Pede para ligar/desligar a lâmpada
+    -   get switch() # Retorna a posição do interruptor;
 
 ![img](diagrama_uso.png "Diagrama de caso de uso")
+
+
+<a id="orgb188323"></a>
+
+### GUI
+
+Uma interface gráfica para o usuário como a da figura \ref{fig:gui} é tida como meio de centralizar as informações de forma que fique acessível ao usuário. Esta será feita no raspberryPI IOs com a biblioteca Qt for python, que é uma versão alternativa ao PyQt com licensa LGPL, para caso o projeto futuramente se torne comercial.
+
+![img](./gui.png "GUI a ser implementada no RaspberryPI OS")
+
+-   Atividades de pesquisa e implementação
+    TODO!!!
+
+
+<a id="orgc759a60"></a>
+
+### Geração de relatórios
+
+Esta parte do projeto consiste em trabalhar com as informações obtidas com as lâmpadas, visa calcular consumos e gerar um histrograma para o consumo de energia dos dispositivos.
+
+-   Atividades de pesquisa e implementação
+    TODO!!!
 

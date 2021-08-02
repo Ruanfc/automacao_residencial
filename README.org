@@ -1,26 +1,32 @@
 #+TITLE: Projeto automação residencial
 
 * Motivação
-Um projeto de automação residencial foi demandado. Primeira coisa que vem em mente é poder controlar as lâmdas de casa individualemente. Assim, pretende-se usar um ESP8266 para cada ponto de interruptor de lâmpada para poder ter conexão com o computador central (raspberry pi). Temos disponíveis sensores piroelétricos, que são úteis para desligar as lâmpadas automaticamente na ausência de pessoas no cômodo.
+Um projeto de automação residencial foi demandado. Primeira coisa que vem em mente é poder controlar as lâmdas de casa individualemente como meio de gerenciar o uso de cargas residenciais, viabilizando a economia de energia elétrica. Assim, pretende-se usar um módulo de ESP01 com relé (vide figura \ref{fig:module_esp01}) para cada ponto de interruptor de lâmpada para poder ter conexão com o computador central (raspberry pi).
 
 * Objetivos
-Gerenciar o funcionamento das lâmpadas de casa, cujas ações de desligar ou ligar possam ser configuradas como automáticas (depende do sensor de presença) ou manuais (depende de comandos por smarthphone, sejam botões e/ou comandos de voz). Este gerenciamento também inclui a formação de relatórios sobre consumo elétrico (estimado) em cada dispositivo, apresentando as informações em histogramas e suas respectivas conclusões.
-Um objetivo secundário seria implementar o controle de ar condicionado, em que a diferença para a lâmpada seria o controle (malha aberta) de temperatura e o registro da mesma no relatório.
+Gerenciar o funcionamento das lâmpadas de casa, cujo funcionamento deve ser por comando de voz ou de forma manual. Este gerenciamento também inclui a formação de relatórios sobre consumo elétrico (estimado) em cada dispositivo, apresentando as informações em histogramas.
 
 * Detalhamento do projeto
 ** Lâmpadas
 *** Descrição do circuito
-Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retificadora e então o módulo relé com o esp8266 controla o chaveamento da lâmpada. Não menos importante, o interruptor da tomada dever ser alimentado por um resistor, cujo estado é lido por uma porta digital. Quase esqueci dos sensores de presença. Devido ao espaço ocupado, novos interruptores devem ser comprados.
-Sendo assim, o $\mu C$ precisará de 3 portas digitais para controlar os periféricos e mais talvez duas para poder programar em ISP.
-Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb no momento é impossível para mim imprimir sem uma impressora adequada.
+Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retificadora e então o módulo relé com o esp8266 controla o chaveamento da lâmpada. Para fazer o controle da lâmpada ser manual torna-se necessário detectar a existência de fase no pino Normalmente Aberto (NA) do relé, como na figura \ref{fig:tomada}.
+
+#+NAME: fig:tomada
+#+CAPTION: Circuito a ser implementado para detecção de fase
+#+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
+[[./tomada.png]]
+
+# Sendo assim, o $\mu C$ precisará de 3 portas digitais para controlar os periféricos e mais talvez duas para poder programar em ISP.
+Não é intenção deste projeto confeccionar placa de circuito impresso para simplificar o projeto e também no momento é impossível para mim imprimir sem uma impressora adequada.
 *** Componentes utilizados (por lâmpada)
 - [X] 1 Trafo de carregador;
 - [X] 4 Diodos 1n4007;
 - [X] 1 Capacitor eletrolítico (47uF);
 - [X] 1 Capacitor cerâmico (100nF);
 - [X] 1 Sensor piroelétrico
-- [ ] 1 Conjunto de interruptor; (Precisa comprar)
-- [X] 1 Módulo de acionamento de relé por ESP8266 (figura \ref{fig:module_esp01})
+- [X] 1 Módulo de acionamento de relé por ESP8266 (figura \ref{fig:module_esp01};
+- [X] 2 transistores de uso geral para para detecção de fase;
+- [X] Resistores diversos
 #+NAME: fig:module_esp01
 #+CAPTION: Módulo relé com ESP01 utilizado
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
@@ -31,33 +37,47 @@ Pretendo não fazer placa de circuito impresso para simplificar o projeto e tb n
 #+CAPTION: Esquema do circuito do módulo com relé
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
 [[./schematic_relay.png]]
-** Controle do ar condicionado
-Decodificar o controle do ar condicionado com um fototransistor. Cada ação iria ser incorporada no código do raspberryPI e então através de um fotodiodo, o ar condicionado pode ser acionado.
-
 
 ** Descrição do software
-Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como escravo para responder aos comandos do computador central e também irá enviar mensagens durante a comutação do sensor piroelétrico (descobrir se não vai haver realimentação positiva com a lâmpada)
-Protocolo de comunicação:
-Tem que descobrir uma forma de protocolar as mensagens. O receptor vai ler a mensagem e vai decodificá-la. Após decodificar, vai executar a ação de desligar/ligar.
+O projeto de software é dividor em 3 partes: Conectividade e gerenciamento de ações; GUI; geração de relatórios
+*** Conectividade e gerenciamento de ações
+Esta parte consiste em fazer os ESP8266 se conectarem com o raspberryPI por rede para estabelecer comunicação (vide figura \ref{fig:lan_concept}) e também consiste nas tomadas de decisão para o raspberryPI, determinando o comportamento de cada lâmpada e dando prioridade aos comandos.
+Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar à espera de comandos. Ele age como escravo para responder aos comandos do computador central.
 
+#+NAME: fig:lan_concept
+#+CAPTION: Visão conceitual para conectividade LAN dos dispositivos
+#+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
+[[./lan_concept.png]]
 
-# #+begin_src python :results output
-# print("Hello World")
-# #+end_src
-
-# #+RESULTS:
-# : Hello World
-# **
-# **
-Procedimentos a serem utilizados na cpu principal:
-- get state() # Retorna o estado atual lâmpada;
-- turn(boolean state) # Pede para ligar/desligar a lâmpada
-- get switch() # Retorna a posição do interruptor;
-
-# *** Criar servidor local/Aberto
-# - Conseguir externar o ip desse servidor
+- Atividades de pesquisa e implementação:
+  + Protocolo de comunicação (http)
+    - Usar os esps como servidores, de modo que o raspberry consiga solicitar informações.
+  + Secure shell (ssh) para compartilhar tela
+  + Programação dos ESP8266
+    - frameworks: Arduino, micropython, RTOS?
+- Procedimentos a serem utilizados na cpu principal:
+  + get state() # Retorna o estado atual lâmpada;
+  + turn(boolean state) # Pede para ligar/desligar a lâmpada
+  + get switch() # Retorna a posição do interruptor;
 
 #+NAME: fig:caso_de_uso
 #+CAPTION: Diagrama de caso de uso
 #+ATTR_LATEX: :width \textwidth :placement [h!]
 [[file:diagrama_uso.png]]
+
+
+*** GUI
+Uma interface gráfica para o usuário como a da figura \ref{fig:gui} é tida como meio de centralizar as informações de forma que fique acessível ao usuário. Esta será feita no raspberryPI IOs com a biblioteca Qt for python, que é uma versão alternativa ao PyQt com licensa LGPL, para caso o projeto futuramente se torne comercial.
+#+NAME: fig:gui
+#+CAPTION: GUI a ser implementada no RaspberryPI OS
+#+ATTR_LATEX: :width \textwidth :placement [h!]
+[[./gui.png]]
+
+- Atividades de pesquisa e implementação
+  TODO!!!
+
+*** Geração de relatórios
+ Esta parte do projeto consiste em trabalhar com as informações obtidas com as lâmpadas, visa calcular consumos e gerar um histrograma para o consumo de energia dos dispositivos.
+
+- Atividades de pesquisa e implementação
+  TODO!!!
