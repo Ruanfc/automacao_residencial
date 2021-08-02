@@ -27,6 +27,7 @@ Não é intenção deste projeto confeccionar placa de circuito impresso para si
 - [X] 1 Módulo de acionamento de relé por ESP8266 (figura \ref{fig:module_esp01};
 - [X] 2 transistores de uso geral para para detecção de fase;
 - [X] Resistores diversos
+- [ ] 1 Interruptor paralelo
 #+NAME: fig:module_esp01
 #+CAPTION: Módulo relé com ESP01 utilizado
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
@@ -51,14 +52,22 @@ Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar
 
 - Atividades de pesquisa e implementação:
   + Protocolo de comunicação (http)
-    - Usar os esps como servidores, de modo que o raspberry consiga solicitar informações.
+    - Usar os esps como servidores, de modo que o raspberry consiga solicitar informações e obter respostas
+    - TCP sockets on raspberry PI
   + Secure shell (ssh) para compartilhar tela
-  + Programação dos ESP8266
-    - frameworks: Arduino, micropython, RTOS?
+    - Pesquisar no site da raspberry PI foundation
+  + Reconhecimento de voz
+    - Aprender a interligar o raspberryPI com celular (pacotes TCP)
+    - Smart Home with Google Assistant & Alexa using NodeMCU ESP8266
++ Programação dos ESP8266
+    - framework: micropython
+    - Micropython: [https://docs.micropython.org/en/latest/esp8266/tutorial/intro.html]
+    - TCP sockets on micropython [https://docs.micropython.org/en/latest/esp8266/tutorial/network_tcp.html]
 - Procedimentos a serem utilizados na cpu principal:
   + get state() # Retorna o estado atual lâmpada;
   + turn(boolean state) # Pede para ligar/desligar a lâmpada
   + get switch() # Retorna a posição do interruptor;
+  + get phase() # Retorna valor para identificar quais ramos estão conectados à fase
 
 #+NAME: fig:caso_de_uso
 #+CAPTION: Diagrama de caso de uso
@@ -74,10 +83,15 @@ Uma interface gráfica para o usuário como a da figura \ref{fig:gui} é tida co
 [[./gui.png]]
 
 - Atividades de pesquisa e implementação
-  TODO!!!
+  + Aprender a criar um layout básico, gereciamento de widgets...
+  + Aprender a embarcar um canvas
+  + Aprender a criar classe que filiada ao Qt for python
+TODO!!!
 
 *** Geração de relatórios
  Esta parte do projeto consiste em trabalhar com as informações obtidas com as lâmpadas, visa calcular consumos e gerar um histrograma para o consumo de energia dos dispositivos.
 
 - Atividades de pesquisa e implementação
-  TODO!!!
+  + Aprender a criar histogramas;
+  + Aprender manipular os parâmetros de gráficos;
+  +
