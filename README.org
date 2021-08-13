@@ -14,7 +14,7 @@ Um pequeno trafo recebe a energia da tomada, é retificada por uma ponte retific
 #+NAME: fig:tomada
 #+CAPTION: Circuito a ser implementado para detecção de fase
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
-[[./tomada.png]]
+[[./images/tomada.png]]
 
 # Sendo assim, o $\mu C$ precisará de 3 portas digitais para controlar os periféricos e mais talvez duas para poder programar em ISP.
 Não é intenção deste projeto confeccionar placa de circuito impresso para simplificar o projeto e também no momento é impossível para mim imprimir sem uma impressora adequada.
@@ -31,13 +31,13 @@ Não é intenção deste projeto confeccionar placa de circuito impresso para si
 #+NAME: fig:module_esp01
 #+CAPTION: Módulo relé com ESP01 utilizado
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
-[[./module_esp01.png]]
+[[./images/module_esp01.png]]
 
   O módulo de relé possui o esquemático como na figura \ref{schematic_relay}
  #+NAME: fig:schematic_relay
 #+CAPTION: Esquema do circuito do módulo com relé
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
-[[./schematic_relay.png]]
+[[./images/schematic_relay.png]]
 
 ** Descrição do software
 O projeto de software é dividor em 3 partes: Conectividade e gerenciamento de ações; GUI; geração de relatórios
@@ -48,7 +48,7 @@ Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar
 #+NAME: fig:lan_concept
 #+CAPTION: Visão conceitual para conectividade LAN dos dispositivos
 #+ATTR_LATEX: :width 0.7\textwidth :placement [h!]
-[[./lan_concept.png]]
+[[./images/lan_concept.png]]
 
 - Atividades de pesquisa e implementação:
   + Protocolo de comunicação (http)
@@ -72,7 +72,7 @@ Os esp8266 das tomadas devem entrar em um ponto de acesso central e então ficar
 #+NAME: fig:caso_de_uso
 #+CAPTION: Diagrama de caso de uso
 #+ATTR_LATEX: :width \textwidth :placement [h!]
-[[file:diagrama_uso.png]]
+[[file:images/diagrama_uso.png]]
 
 
 *** GUI
@@ -80,7 +80,7 @@ Uma interface gráfica para o usuário como a da figura \ref{fig:gui} é tida co
 #+NAME: fig:gui
 #+CAPTION: GUI a ser implementada no RaspberryPI OS
 #+ATTR_LATEX: :width \textwidth :placement [h!]
-[[./gui.png]]
+[[./images/gui.png]]
 
 - Atividades de pesquisa e implementação
   + Aprender a criar um layout básico, gereciamento de widgets...
