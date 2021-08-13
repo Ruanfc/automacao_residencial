@@ -4,7 +4,7 @@
 const char *ssid = "+FIBRATELECOM(IVO) 2.4G";
 const char *password = "16019813";
 // Set your Static IP address
-IPAddress local_IP(192, 168, 1, 184);
+IPAddress local_IP(192, 168, 1, 184); // Precisa diferenciar os módulos
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 1, 1);
 
@@ -17,6 +17,7 @@ WiFiClient client;       // Cria o objeto client
 
 void handler(String message);
 int led = 0; // Pino para comutar o relé
+int state = LOW;
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
@@ -43,6 +44,7 @@ void setup() {
   server.begin();
 
   pinMode(led, OUTPUT);
+  digitalWrite(led, state);
 }
 
 void loop() {
@@ -62,11 +64,11 @@ void loop() {
       Serial.println(req);
 
       // Resposta
-      client.print("O servidor ");
-      client.print(client.remoteIP());
-      client.print(" recebeu sua mensagem: ");
-      // Mensagem
-      client.println(req);
+      // client.print("O servidor ");
+      // client.print(client.remoteIP());
+      // client.print(" recebeu sua mensagem: ");
+      // // Mensagem
+      // client.println(req);
 
       handler(req);
     }
@@ -77,8 +79,18 @@ void loop() {
 }
 
 void handler(String message) {
-  if (message.indexOf("on") > 0)
+  if (message.indexOf("on") > 0) {
+    state = HIGH;
     digitalWrite(led, HIGH);
-  if (message.indexOf("off") > 0)
+    client.println("ok");
+  }
+  if (message.indexOf("off") > 0) {
+    state = LOW;
     digitalWrite(led, LOW);
+    client.println("ok");
+  }
+  if (message.indexOf("get") > 0) {
+    String state_string = state ? "_green" : "_red";
+    client.println(state_string);
+  }
 }
