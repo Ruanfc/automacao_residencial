@@ -3,17 +3,16 @@
 
 const char *ssid = "+FIBRATELECOM(IVO) 2.4G";
 const char *password = "16019813";
-// Set your Static IP address
-IPAddress local_IP(192, 168, 1, 184); // Precisa diferenciar os módulos
+
+IPAddress local_IP(192, 168, 1, 181); // Precisa diferenciar os módulos
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 1, 1);
 
 IPAddress subnet(255, 255, 0, 0);
 IPAddress primaryDNS(8, 8, 8, 8);   // optional
 IPAddress secondaryDNS(8, 8, 4, 4); // optional
-
-WiFiServer server(8266); // Cria servidor na porta 8266
-WiFiClient client;       // Cria o objeto client
+WiFiServer server(8266);            // Cria servidor na porta 8266
+WiFiClient client;                  // Cria o objeto client
 
 void handler(String message);
 int led = 0; // Pino para comutar o relé
@@ -23,6 +22,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
 
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    // Set your Static IP address
     Serial.println("STA Failed to configure");
   }
 
