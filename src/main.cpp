@@ -4,7 +4,7 @@
 const char *ssid = "+FIBRATELECOM(IVO) 2.4G";
 const char *password = "16019813";
 
-IPAddress local_IP(192, 168, 1, 181); // Precisa diferenciar os módulos
+IPAddress local_IP(192, 168, 1, 182); // Precisa diferenciar os módulos
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 1, 1);
 

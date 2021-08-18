@@ -4,3 +4,4 @@
 .ccls-cache/
 README.org
 env/
+src/_pycache__/

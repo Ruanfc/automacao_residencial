@@ -9,11 +9,15 @@ import socket
 
 
 def liga_lampada(id):
+    s[id].sendall("turn on".encode())
+    print(s[id].recv(1024).decode())
     eval("tela.frame_desligado" + index[id]).close()
     eval("tela.frame_ligado" + index[id]).show()
 
 
 def desliga_lampada(id):
+    s[id].sendall("turn off".encode())
+    print(s[id].recv(1024).decode())
     eval("tela.frame_desligado" + index[id]).show()
     eval("tela.frame_ligado" + index[id]).close()
 
@@ -34,6 +38,7 @@ def grafico():
 
 index = ["", "_2", "_7", "_8", "_9"]
 n = len(index)
+used_lamps = 3
 ipIndex = []
 s = []
 for i, id in enumerate(index):
@@ -41,7 +46,8 @@ for i, id in enumerate(index):
     s.append(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
     s[-1].settimeout(10)
     # Precisa ter cuidado ao não conectar, talvez um timeout sirva
-    s[-1].connect((ipIndex[-1], 8266))
+    if i < used_lamps:
+        s[-1].connect((ipIndex[-1], 8266))
     pass
 
 
@@ -49,18 +55,20 @@ aplicacao = QtWidgets.QApplication([])
 tela = uic.loadUi("untitled.ui")
 tela.btn_grafico.clicked.connect(grafico)
 tela.btn_luzes.clicked.connect(lampadas)
-for i in range(n):
+for i in range(used_lamps):
     eval(
         "tela.btn_liga"
         + index[i]
-        + ".clicked.connect(lambda i : liga_lampada("
+        + ".clicked.connect(lambda i"
+        + ": liga_lampada("
         + str(i)
         + "))"
     )
     eval(
         "tela.btn_desliga"
         + index[i]
-        + ".clicked.connect(lambda i : desliga_lampada("
+        + ".clicked.connect(lambda i"
+        + ": desliga_lampada("
         + str(i)
         + "))"
     )
