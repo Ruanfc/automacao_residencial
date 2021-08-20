@@ -6,7 +6,8 @@ from PyQt5 import uic,QtWidgets, QtGui
 from numpy import true_divide
 from grafico_figura import*
 from time import sleep
-
+caminho = 0
+Tcaminho = ''
 def liga_lampada0():
         tela.frame_desligado.close()
         tela.frame_ligado.show()
@@ -57,15 +58,30 @@ def desliga_terraco():
 
 def lampadas():
     tela.luz_frame.show()
+    
+#     os.remove('Figure_1.png')
     tela.grafico_frame.close()
 
 def grafico():
+    global caminho
+#     tela.ATUALIZE.clicked=True
+#     sleep(1)
+#     tela.ATUALIZE.clicked=False
+    
+    if caminho == 0:
+        
+        caminho= caminho + 1
+        Tcaminho = "figure_1.png"
+        print(Tcaminho)
+    else:
+        Tcaminho="figure2.png"
+        caminho = 0
+        print(Tcaminho)
+
     tela.luz_frame.close()
-    gera_graf()
-    sleep(1)
-    # tela.grafico_frame=MatplotlibWidget()
+    gera_graf(Tcaminho)
+    tela.figure.setPixmap(QtGui.QPixmap(Tcaminho))
     tela.grafico_frame.show()
-    # tela.grafWid.show()
   
     
 
@@ -86,18 +102,6 @@ tela.btn_liga_9.clicked.connect(liga_quarto2)
 tela.btn_desliga_9.clicked.connect(desliga_quarto2)
 tela.btn_liga_10.clicked.connect(liga_terraco)
 tela.btn_desliga_10.clicked.connect(desliga_terraco)
+tela.ATUALIZE.clicked.connect(grafico)
 tela.show()
 aplicacao.exec()
-def graf():
-    while True:
-        tela.figure.setPixmap(QtGui.QPixmap("Figure_1.png"))
-        sleep(1)
-        print("foi")
-        graf.exit()
-# grafic=graf(graf)
-# graf.start()
-# threading.Thread(target = graf).start()
-if __name__ == "__RDF_automacao__":
-    threading.Thread(target = graf).start()
-    print('agora foi')
-    sleep(1)

@@ -582,11 +582,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado</zorder>
-           <zorder>btn_liga</zorder>
-           <zorder>btn_desliga</zorder>
-           <zorder>label</zorder>
-           <zorder>frame_desligado</zorder>
           </widget>
           <widget class="QFrame" name="frame_lmpada_2">
            <property name="geometry">
@@ -854,11 +849,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado_2</zorder>
-           <zorder>btn_liga_2</zorder>
-           <zorder>btn_desliga_2</zorder>
-           <zorder>label_2</zorder>
-           <zorder>frame_desligado_2</zorder>
           </widget>
           <widget class="QLabel" name="label_9">
            <property name="geometry">
@@ -1226,11 +1216,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado_7</zorder>
-           <zorder>btn_liga_7</zorder>
-           <zorder>btn_desliga_7</zorder>
-           <zorder>label_7</zorder>
-           <zorder>frame_desligado_7</zorder>
           </widget>
           <widget class="QFrame" name="frame_lmpada_6">
            <property name="geometry">
@@ -1498,11 +1483,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado_8</zorder>
-           <zorder>btn_liga_8</zorder>
-           <zorder>btn_desliga_8</zorder>
-           <zorder>label_8</zorder>
-           <zorder>frame_desligado_8</zorder>
           </widget>
           <widget class="QFrame" name="frame_lmpada_7">
            <property name="geometry">
@@ -1770,11 +1750,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado_9</zorder>
-           <zorder>btn_liga_9</zorder>
-           <zorder>btn_desliga_9</zorder>
-           <zorder>label_14</zorder>
-           <zorder>frame_desligado_9</zorder>
           </widget>
           <widget class="QFrame" name="frame_lmpada_8">
            <property name="geometry">
@@ -2042,11 +2017,6 @@ QPushButton:pressed{
              </property>
             </widget>
            </widget>
-           <zorder>frame_ligado_10</zorder>
-           <zorder>btn_liga_10</zorder>
-           <zorder>btn_desliga_10</zorder>
-           <zorder>label_15</zorder>
-           <zorder>frame_desligado_10</zorder>
           </widget>
          </widget>
          <widget class="QFrame" name="grafico_frame">
@@ -2076,10 +2046,10 @@ QPushButton:pressed{
            <widget class="QLabel" name="figure">
             <property name="geometry">
              <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>600</width>
-              <height>500</height>
+              <x>10</x>
+              <y>10</y>
+              <width>551</width>
+              <height>381</height>
              </rect>
             </property>
             <property name="text">
@@ -2095,30 +2065,6 @@ QPushButton:pressed{
              <bool>false</bool>
             </property>
            </widget>
-           <widget class="QPushButton" name="ATUALIZE">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>120</y>
-              <width>75</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>PushButton</string>
-            </property>
-            <property name="autoRepeat">
-             <bool>true</bool>
-            </property>
-            <property name="autoRepeatDelay">
-             <number>1000</number>
-            </property>
-            <property name="autoRepeatInterval">
-             <number>1000</number>
-            </property>
-           </widget>
-           <zorder>ATUALIZE</zorder>
-           <zorder>figure</zorder>
           </widget>
          </widget>
          <zorder>grafico_frame</zorder>

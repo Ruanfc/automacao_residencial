@@ -278,6 +278,11 @@ class Ui_RDF(object):
         self.text_estado.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado.setObjectName("text_estado")
+        self.frame_ligado.raise_()
+        self.btn_liga.raise_()
+        self.btn_desliga.raise_()
+        self.label.raise_()
+        self.frame_desligado.raise_()
         self.frame_lmpada_2 = QtWidgets.QFrame(self.luz_frame)
         self.frame_lmpada_2.setGeometry(QtCore.QRect(160, 40, 141, 91))
         self.frame_lmpada_2.setStyleSheet("    \n"
@@ -400,6 +405,11 @@ class Ui_RDF(object):
         self.text_estado_3.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado_3.setObjectName("text_estado_3")
+        self.frame_ligado_2.raise_()
+        self.btn_liga_2.raise_()
+        self.btn_desliga_2.raise_()
+        self.label_2.raise_()
+        self.frame_desligado_2.raise_()
         self.label_9 = QtWidgets.QLabel(self.luz_frame)
         self.label_9.setGeometry(QtCore.QRect(130, 10, 61, 21))
         font = QtGui.QFont()
@@ -562,6 +572,11 @@ class Ui_RDF(object):
         self.text_estado_8.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado_8.setObjectName("text_estado_8")
+        self.frame_ligado_7.raise_()
+        self.btn_liga_7.raise_()
+        self.btn_desliga_7.raise_()
+        self.label_7.raise_()
+        self.frame_desligado_7.raise_()
         self.frame_lmpada_6 = QtWidgets.QFrame(self.luz_frame)
         self.frame_lmpada_6.setGeometry(QtCore.QRect(160, 190, 141, 91))
         self.frame_lmpada_6.setStyleSheet("    \n"
@@ -684,6 +699,11 @@ class Ui_RDF(object):
         self.text_estado_9.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado_9.setObjectName("text_estado_9")
+        self.frame_ligado_8.raise_()
+        self.btn_liga_8.raise_()
+        self.btn_desliga_8.raise_()
+        self.label_8.raise_()
+        self.frame_desligado_8.raise_()
         self.frame_lmpada_7 = QtWidgets.QFrame(self.luz_frame)
         self.frame_lmpada_7.setGeometry(QtCore.QRect(10, 340, 141, 91))
         self.frame_lmpada_7.setStyleSheet("    \n"
@@ -806,6 +826,11 @@ class Ui_RDF(object):
         self.text_estado_10.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado_10.setObjectName("text_estado_10")
+        self.frame_ligado_9.raise_()
+        self.btn_liga_9.raise_()
+        self.btn_desliga_9.raise_()
+        self.label_14.raise_()
+        self.frame_desligado_9.raise_()
         self.frame_lmpada_8 = QtWidgets.QFrame(self.luz_frame)
         self.frame_lmpada_8.setGeometry(QtCore.QRect(160, 340, 141, 91))
         self.frame_lmpada_8.setStyleSheet("    \n"
@@ -928,6 +953,11 @@ class Ui_RDF(object):
         self.text_estado_11.setStyleSheet("    border:0px solid rgb(90, 90, 90);\n"
 "    border-radius:20px;")
         self.text_estado_11.setObjectName("text_estado_11")
+        self.frame_ligado_10.raise_()
+        self.btn_liga_10.raise_()
+        self.btn_desliga_10.raise_()
+        self.label_15.raise_()
+        self.frame_desligado_10.raise_()
         self.grafico_frame = QtWidgets.QFrame(self.CONTEUDO)
         self.grafico_frame.setGeometry(QtCore.QRect(0, 0, 600, 600))
         self.grafico_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -937,12 +967,22 @@ class Ui_RDF(object):
         self.grafw.setGeometry(QtCore.QRect(-1, -1, 600, 500))
         self.grafw.setObjectName("grafw")
         self.figure = QtWidgets.QLabel(self.grafw)
-        self.figure.setGeometry(QtCore.QRect(10, 10, 600, 500))
+        self.figure.setGeometry(QtCore.QRect(0, 0, 600, 500))
         self.figure.setText("")
-        self.figure.setPixmap(QtGui.QPixmap("../projeto_v2/Projeto/graficos - matiplotlib/Figure_1.png"))
+        self.figure.setPixmap(QtGui.QPixmap("Figure_1.png"))
         self.figure.setScaledContents(True)
         self.figure.setWordWrap(False)
         self.figure.setObjectName("figure")
+        self.ATUALIZE = QtWidgets.QPushButton(self.grafw)
+        self.ATUALIZE.setGeometry(QtCore.QRect(30, 120, 75, 23))
+        self.ATUALIZE.setAutoRepeat(True)
+        self.ATUALIZE.setAutoRepeatDelay(1000)
+        self.ATUALIZE.setAutoRepeatInterval(1000)
+        self.ATUALIZE.setObjectName("ATUALIZE")
+        self.ATUALIZE.raise_()
+        self.figure.raise_()
+        self.grafico_frame.raise_()
+        self.luz_frame.raise_()
         self.horizontalLayout.addWidget(self.CONTEUDO)
         self.verticalLayout.addWidget(self.CORPO)
         RDF.setCentralWidget(self.centralwidget)
@@ -997,6 +1037,7 @@ class Ui_RDF(object):
         self.label_15.setText(_translate("RDF", "LAMPADA"))
         self.text_desligado_10.setText(_translate("RDF", "OFF"))
         self.text_estado_11.setText(_translate("RDF", "ON"))
+        self.ATUALIZE.setText(_translate("RDF", "PushButton"))
 
 
 if __name__ == "__main__":

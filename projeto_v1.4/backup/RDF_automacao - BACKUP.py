@@ -2,7 +2,8 @@
 # autor Flávio Cândido
 # v1.0
 
-from PyQt5 import uic,QtWidgets
+from PyQt5 import uic,QtWidgets, QtGui
+from numpy import true_divide
 from grafico_figura import*
 from time import sleep
 
@@ -57,14 +58,16 @@ def desliga_terraco():
 def lampadas():
     tela.luz_frame.show()
     tela.grafico_frame.close()
-    
-        
+
 def grafico():
     tela.luz_frame.close()
     gera_graf()
+    sleep(1)
+    # tela.grafico_frame=MatplotlibWidget()
     tela.grafico_frame.show()
-   
-
+    # tela.grafWid.show()
+  
+    
 
     
 aplicacao=QtWidgets.QApplication([])
@@ -85,3 +88,16 @@ tela.btn_liga_10.clicked.connect(liga_terraco)
 tela.btn_desliga_10.clicked.connect(desliga_terraco)
 tela.show()
 aplicacao.exec()
+def graf():
+    while True:
+        tela.figure.setPixmap(QtGui.QPixmap("Figure_1.png"))
+        sleep(1)
+        print("foi")
+        graf.exit()
+# grafic=graf(graf)
+# graf.start()
+# threading.Thread(target = graf).start()
+if __name__ == "__RDF_automacao__":
+    threading.Thread(target = graf).start()
+    print('agora foi')
+    sleep(1)
